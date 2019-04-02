@@ -1,9 +1,45 @@
 // Setup initial game stats
+
 let score = 0;
 let lives = 2;
 
 
 // Define your ghosts here
+
+const inky = {
+  menu_option: '1',
+  name: 'Inky',
+  color: 'Red',
+  character: 'Shadow'
+  // edible: false
+};
+
+
+const blinky = {
+  menu_option: '2',
+  name: 'Blinky',
+  color: 'Cyan',
+  character: 'Speedy'
+  // edible: false
+};
+
+
+const pinky = {
+  menu_option: '3',
+  name: 'Pinky',
+  color: 'Pink',
+  character: 'Bashful'
+  // edible: false
+};
+
+
+const clyde = {
+  menu_option: '4',
+  name: 'Clyde',
+  color: 'Orange',
+  character: 'Pokey'
+  // edible: false
+};
 
 // replace this comment with your four ghosts setup as objects
 
@@ -24,11 +60,20 @@ function clearScreen() {
 
 function displayStats() {
   console.log(`Score: ${score}     Lives: ${lives}`);
+  console.log(`\nPower-Pellets: ${powerPellets}`);
 }
+
 
 function displayMenu() {
   console.log('\n\nSelect Option:\n');  // each \n creates a new line
   console.log('(d) Eat Dot');
+  if (powerPellets > 0) {
+    console.log('(p) Eat Power-Pellet');
+  }
+  ghosts.forEach(function(ghost) {
+    let edible_status = ghost.edible ? 'edible':'inedible';
+    console.log(`(${ghost.menu_option}) Eat ${ghost.name} (${edible_status})`);
+  });
   console.log('(q) Quit');
 }
 
@@ -37,13 +82,40 @@ function displayPrompt() {
   process.stdout.write('\nWaka Waka :v '); // :v is the Pac-Man emoji.
 }
 
-
 // Menu Options
 function eatDot() {
   console.log('\nChomp!');
   score += 10;
 }
 
+function eatGhost(ghost) {
+  if (!ghost.edible) {
+    console.log(`\n${ghost.colour} ${ghost.name} killed Pac-Man!`);
+    lives--;
+    checkLives();
+  } else {
+    console.log(`\nPac-Man just ate ${ghost.colour} ${ghost.name}!`);
+    score += 200;
+    ghost.edible = false;
+  }
+}
+ function eatPowerPellet() {
+   score += 50;
+   ghosts.forEach(function(ghost) {
+     ghost.edible = true;
+   });
+   powerPellets--;
+ }
+
+function checkLives() {
+  if (lives < 0) {
+    process.exit();
+  }
+}
+
+function somePelletsLeft() {
+  return powerPellets > 0;
+}
 
 // Process Player's Input
 function processInput(key) {
