@@ -2,6 +2,7 @@
 
 let score = 0;
 let lives = 2;
+let powerPellets = 0;
 
 
 // Define your ghosts here
@@ -70,13 +71,20 @@ function displayMenu() {
   if (powerPellets > 0) {
     console.log('(p) Eat Power-Pellet');
   }
+  let ghosts = [];
+  loadGhosts(ghosts);
   ghosts.forEach(function(ghost) {
     let edible_status = ghost.edible ? 'edible':'inedible';
     console.log(`(${ghost.menu_option}) Eat ${ghost.name} (${edible_status})`);
   });
   console.log('(q) Quit');
 }
-
+function loadGhosts(ghosts){
+  ghosts.push(inky);
+  ghosts.push(pinky);
+  ghosts.push(blinky);
+  ghosts.push(clyde);
+}
 function displayPrompt() {
   // process.stdout.write is similar to console.log except it doesn't add a new line after the text
   process.stdout.write('\nWaka Waka :v '); // :v is the Pac-Man emoji.
@@ -139,7 +147,7 @@ function processInput(key) {
 
 // Setup Input and Output to work nicely in our Terminal
 const stdin = process.stdin;
-stdin.setRawMode(true);
+// stdin.setRawMode(true);
 stdin.resume();
 stdin.setEncoding('utf8');
 
